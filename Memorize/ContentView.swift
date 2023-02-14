@@ -8,52 +8,78 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["🚗", "🛳️", "🚔", "🛸", "✈️", "🚀", "🛫", "🏎️", "🚎", "🚨", "🚍", "🦼", "🚠", "🗿", "🚁", "💺", "🛴", "🩼", "🚂", "🛵", "🛞", "💻", "🌯", "🚴‍♀️"]
+    
+    var emojiSet = [["🚗", "🛳️", "🚔", "🛸", "✈️", "🚀", "🛫", "🏎️", "🚎", "🚨", "🚍", "🦼", "🚠", "🗿", "🚁", "💺", "🛴", "🩼", "🚂", "🛵", "🛞", "💻", "🌯", "🚴‍♀️"], ["🏖️", "🌋", "🏔️", "⛺️", "🌅", "🌊", "🌎", "🌨️", "🌪️", "🌞", "🌵", "🪵", "🌷", "🌝", "🌖", "🌸", "🔥", "⚡️", "☄️", "💦", "❄️", "🌻", "🐲", "🦃"], ["⚽️", "🏀", "🏈", "⚾️", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱", "🪀", "🏓", "🏸", "🏒", "🏑", "🥌", "🏂", "🪃", "⛸️", "🚵‍♀️", "🎧", "🎮", "🧩", "🏆"]]
+    
+    
     
     @State var emojiCount: Int = 20
+    @State var emojiTheme: Int = 0
+    
    
     var body: some View {
         VStack {
+            Text("Memorize!")
+                .font(.largeTitle)
+            
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
-                    ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
+                    var chosenEmojiSet = emojiSet[emojiTheme].shuffled()
+                    //emojiTheme should be a number between 0...2
+                    ForEach(chosenEmojiSet[0..<emojiCount], id: \.self) { emoji in
                         CardView(content: emoji).aspectRatio(2/3, contentMode: .fit)
                     }
                 }
                 .foregroundColor(.red)
             }
-            
-            Spacer()
-            HStack{
-                remove
+            HStack(alignment: .center){
+                themeOne
                 Spacer()
-                add
+                themeTwo
+                Spacer()
+                themeThree
             }
             .font(.largeTitle)
             .padding()
+            
         }
         .padding(.horizontal)
+    }
+    
+    var themeOne: some View {
+        VStack {
+            Text("Transportation")
+                .font(.caption)
+            Button {
+                emojiTheme = 0
+            } label: {
+                Image(systemName: "tram.circle")
+        }
+        }
         
     }
     
-    var remove: some View {
-        Button {
-            if emojiCount > 1 {
-                emojiCount -= 1
-            }
-            
-        } label: {
-            Image(systemName: "minus.circle")
+    var themeTwo: some View {
+        VStack {
+            Text("Nature")
+                .font(.caption)
+            Button {
+                emojiTheme = 1
+            } label: {
+                Image(systemName: "tree.circle")
+        }
         }
     }
     
-    var add: some View {
-        Button {
-            if emojiCount < emojis.count {
-                emojiCount += 1
-            }
-        } label: {
-            Image(systemName: "plus.circle")
+    var themeThree: some View {
+        VStack {
+            Text("Activity")
+                .font(.caption)
+            Button {
+                emojiTheme = 2
+            } label: {
+                Image(systemName: "figure.run.circle")
+        }
         }
     }
 }
